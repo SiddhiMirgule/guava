@@ -669,21 +669,13 @@ public final class ClassPath {
 
   // TODO(benyu): Try java.nio.file.Paths#get() when Guava drops JDK 6 support.
   @VisibleForTesting
-//  static File toFile(URL url) {
-//    checkArgument(url.getProtocol().equals("file"));
-//    try {
-//      return new File(url.toURI()); // Accepts escaped characters like %20.
-//    } catch (URISyntaxException e) { // URL.toURI() doesn't escape chars.
-//      return new File(url.getPath()); // Accepts non-escaped chars like space.
-//    }
-//  }
   static File toFile(URL url) {
     checkArgument(url.getProtocol().equals("file"));
     try {
-      return new File(url.toURI());
-    } catch (URISyntaxException e) {
-      // Fallback: decode manually
-      return new File(java.net.URLDecoder.decode(url.getPath(), java.nio.charset.StandardCharsets.UTF_8));
+      return new File(url.toURI()); // Accepts escaped characters like %20.
+    } catch (URISyntaxException e) { // URL.toURI() doesn't escape chars.
+      return new File(url.getPath()); // Accepts non-escaped chars like space.
     }
   }
+
 }
